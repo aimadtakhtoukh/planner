@@ -1,10 +1,8 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-/*
 const fs = require('fs');
 const https = require('https');
-*/
 
 app.use('/api/discord', require('./discord-oauth2'));
 
@@ -29,17 +27,17 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+/*
 app.listen(4200, () => {
     console.log('Server started!');
 });
-
-/*
-console.log(fs.readFileSync('../keystore.p12'));
+*/
 const credentials = {
-    cert : fs.readFileSync('../keystore.p12')
+    key : fs.readFileSync('/certs/privkey.pem'),
+    cert : fs.readFileSync('/certs/cert.pem'),
+    ca : fs.readFileSync('/certs/chain.pem')
 };
 https.createServer(credentials, app);
 https.listen(4200, () => {
   console.log('Server started!');
 });
-*/

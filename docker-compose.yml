@@ -4,18 +4,18 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-      ports:
-        - "127.0.0.1:3306:3306"
+    ports:
+      - "127.0.0.1:3306:3306"
   back:
     build:
       context: ./back
       dockerfile: Dockerfile
-      ports:
-        - "8443:8443"
+    ports:
+      - "8443:8443"
   front:
     build:
       context: ./front
       dockerfile: Dockerfile
-      ports:
-        - "1443:1443"
+    ports:
+      - "1443:1443"
 
