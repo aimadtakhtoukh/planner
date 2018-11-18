@@ -7,7 +7,7 @@ const router = express.Router();
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const redirect = encodeURIComponent('http://localhost:4200/api/discord/callback');
+const redirect = encodeURIComponent(process.env.REDIRECT_URL + '/api/discord/callback');
 const scope = "identify";
 
 router.get('/login', (req, res) => {

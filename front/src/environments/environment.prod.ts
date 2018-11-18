@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "https://back:8443/"
+  apiUrl: "https://api.planner.roleplay.ovh/"
 };

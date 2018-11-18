@@ -33,11 +33,11 @@ app.listen(4200, () => {
 });
 */
 const credentials = {
-    key : fs.readFileSync(path.join('certs', 'privkey.pem')),
-    cert : fs.readFileSync(path.join('certs', 'cert.pem')),
-    ca : fs.readFileSync(path.join('certs', 'chain.pem'))
+    key : fs.readFileSync(path.join('/certs', 'privkey.pem')),
+    cert : fs.readFileSync(path.join('/certs', 'cert.pem')),
+    ca : fs.readFileSync(path.join('/certs', 'chain.pem'))
 };
-https.createServer(credentials, app);
-https.listen(4200, () => {
+const server = https.createServer(credentials, app);
+server.listen(4200, () => {
   console.log('Server started!');
 });
