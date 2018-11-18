@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+    background-color: #36393f;
+    color : hsla(0,0%,100%,.6);
+}
+
+.modal-content {
+    background-color: #36393f !important;
+    color : hsla(0,0%,100%,.6) !important;
+
+    .modal-header {
+        border-bottom: 0;
+    }
+
+    .modal-footer {
+        border-top : 0;
+    }
+}

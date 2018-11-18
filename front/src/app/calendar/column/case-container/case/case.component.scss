@@ -1,0 +1,33 @@
+.case {
+  text-align: center;
+}
+
+.on {
+  background-color : lightgreen;
+  color : green;
+}
+
+.off {
+  background-color : lightcoral;
+  color : darkred;
+}
+
+.maybe {
+  background-color : #fbc97f;
+  color : darkorange;
+}
+
+.planning {
+  background-color: lightblue;
+  color : darkblue;
+  font-weight: bolder;
+}
+
+.default {
+  background-color : #36393f;
+  color : grey;
+
+  span {
+    font-weight: bold;
+  }
+}

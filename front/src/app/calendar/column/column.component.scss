@@ -1,0 +1,30 @@
+.column {
+  border-right: 1px solid grey;
+  min-width: 80px;
+  flex: 1;
+
+  &.edited {
+    min-width: 160px;
+  }
+
+  .case {
+    width: 100%;
+    white-space: nowrap;
+
+    span {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+
+.header {
+  border-bottom: 1px solid grey;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+
+  a {
+    margin-left: 12px;
+  }
+}

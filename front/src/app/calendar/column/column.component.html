@@ -1,0 +1,14 @@
+<div class="column" [ngClass]="{'edited' : isColumnDeployed()}">
+  <div class="header">
+    <span>{{user.name}}</span>
+    <a *ngIf="isEditable()" (click)="deployColumn()">
+      <span class="glyphicon glyphicon-edit"></span>
+    </a>
+  </div>
+    <case-container
+      *ngFor="let day of selectableDays"
+      [model]="getEntryFromDate(day.format('DD/MM/YYYY'))"
+      [editable]="isEditable()"
+    >
+    </case-container>
+</div>

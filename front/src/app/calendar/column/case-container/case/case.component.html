@@ -1,0 +1,21 @@
+<div class="case" [ngSwitch]="state">
+
+  <div *ngSwitchCase="'ON'" class="on">
+    <span class="glyphicon glyphicon-ok"></span>
+  </div>
+  <div *ngSwitchCase="'OFF'" class="off">
+    <span class="glyphicon glyphicon-ban-circle"></span>
+  </div>
+  <div *ngSwitchCase="'MAYBE'" class="maybe">
+    <span>(</span>
+    <span class="glyphicon glyphicon-ok"></span>
+    <span>)</span>
+  </div>
+  <div *ngSwitchCase="'PLANNING'" class="planning">
+    <span>!</span>
+  </div>
+
+  <div *ngSwitchDefault class="default">
+    <span>?</span>
+  </div>
+</div>

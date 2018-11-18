@@ -1,0 +1,4 @@
+<div>
+  <case *ngIf="!model.deployed" [state]="model.entry.dispo" (click)="onCaseClick()"></case>
+  <dispo-picker *ngIf="model.deployed" [(model)]="model"></dispo-picker>
+</div>

@@ -1,0 +1,37 @@
+.selector {
+
+  display: flex;
+
+  .button {
+    flex : 1;
+    width: 20px;
+    max-height: 20px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .on {
+    @extend .button;
+    background-color : lightgreen;
+    color : green;
+  }
+
+  .off {
+    @extend .button;
+    background-color : lightcoral;
+    color : darkred;
+  }
+
+  .maybe {
+    @extend .button;
+    background-color : #fbc97f;
+    color : darkorange;
+  }
+
+  .planning {
+    @extend .button;
+    background-color: lightblue;
+    color : darkblue;
+    font-weight: bolder;
+  }
+}

@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://${DATABASE_HOST}:3306/planner
+    username: ${DATABASE_LOGIN}
+    password: ${DATABASE_PASSWORD}
+    driverClassName: org.mariadb.jdbc.Driver
+    continueOnError: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+server:
+  port: 8443
+  ssl:
+    key-store: keystore.p12
+    key-store-password: password
+    key-store-type: PKCS12
