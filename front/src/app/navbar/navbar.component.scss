@@ -3,7 +3,7 @@
     overflow: hidden;
     display: flex;
 
-  span {
+  span, a {
     align-self: flex-start;
     display: block;
     color: #f2f2f2;
@@ -22,13 +22,15 @@
     flex-direction: row;
 
     .login-info {
-      font-size : 1.8rem;
+      font-size : 1.5rem;
     }
 
     .btn {
       background-color : #7289da;
       color : white;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
+      height: 3rem;
+      align-self: center;
     }
 
     &.hidden {

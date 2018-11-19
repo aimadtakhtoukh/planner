@@ -1,9 +1,9 @@
 <div class="topnav">
-  <span>
+  <a href="/">
     Calendar
-  </span>
+  </a>
   <div class="right-options" *ngIf="rightOptionsShown()">
-    <span class="login-info"> Connecté en tant que {{user.name}}</span>
+    <span class="login-info">{{user.name}}</span>
     <button class="btn" (click)="logout()">Déconnexion</button>
   </div>
 </div>
