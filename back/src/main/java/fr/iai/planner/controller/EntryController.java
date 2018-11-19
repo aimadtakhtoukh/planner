@@ -47,9 +47,6 @@ public class EntryController {
             @PathVariable Long userId,
             @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) throws ForbiddenException {
-        if (!securityUser.getUser().getId().equals(userId)) {
-            throw new ForbiddenException("You can't edit others' data.");
-        }
         return entryRepository.findByUserIdAndDateBetween(
                 userId,
                 Optional.ofNullable(start).orElse(LocalDate.now()),
