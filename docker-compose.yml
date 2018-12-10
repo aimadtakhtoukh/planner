@@ -6,16 +6,24 @@ services:
       dockerfile: Dockerfile
     ports:
       - "127.0.0.1:3306:3306"
+    env_file:
+      - ./db/env.properties
+    volumes:
+      - ${PATH_TO_DATA}:/var/lib/mysql
   back:
     build:
       context: ./back
       dockerfile: Dockerfile
     ports:
       - "8443:8443"
+    env_file:
+      - ./back/env.properties
   front:
     build:
       context: ./front
       dockerfile: Dockerfile
     ports:
       - "1443:1443"
+    env_file:
+      - ./front/env.properties
 
