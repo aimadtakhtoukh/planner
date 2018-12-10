@@ -7,6 +7,7 @@ import fr.iai.planner.security.SecurityLevel;
 import fr.iai.planner.security.aspect.Secured;
 import fr.iai.planner.security.exception.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,8 @@ public class EntryController {
 
     private final EntryRepository entryRepository;
     private final SecurityUser securityUser;
+    @Value("${SECURITY_ENABLED}")
+    private boolean securityEnabled;
 
     @Autowired
     public EntryController(EntryRepository entryRepository, SecurityUser securityUser) {
@@ -63,8 +66,10 @@ public class EntryController {
     @Secured(SecurityLevel.ANY_USER)
     @PostMapping("add")
     public void addEntry(@RequestBody Entry entry) throws ForbiddenException {
-        if (!securityUser.getUser().getId().equals(entry.getUserId())) {
-            throw new ForbiddenException("You can't edit others' data.");
+        if (securityEnabled) {
+            if (!securityUser.getUser().getId().equals(entry.getUserId())) {
+                throw new ForbiddenException("You can't edit others' data.");
+            }
         }
         entryRepository.save(
                 new Entry.Builder()

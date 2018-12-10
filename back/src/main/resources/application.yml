@@ -5,7 +5,11 @@ spring:
     password: ${DATABASE_PASSWORD}
     driverClassName: org.mariadb.jdbc.Driver
     continueOnError: true
+    initialization-mode: never
+    hikari:
+      initialization-fail-timeout: 0
   jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: false
     hibernate:
       ddl-auto: validate
@@ -13,8 +17,9 @@ spring:
     serialization:
       write_dates_as_timestamps: false
 server:
-  port: 8443
+  port: ${SERVER_PORT}
   ssl:
-    key-store: keystore.p12
-    key-store-password: password
+    enabled: ${SECURITY_ENABLED}
+    key-store: ${KEYSTORE_PATH}
+    key-store-password: ${KEYSTORE_PASSWORD}
     key-store-type: PKCS12

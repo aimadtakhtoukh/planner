@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const btoa = require('btoa');
 const { catchAsync } = require('./utils');
+const https = require('https');
 
 const router = express.Router();
 
@@ -26,7 +27,46 @@ router.get('/callback', catchAsync(async (req, res) => {
             },
         });
     const json = await response.json();
-    res.redirect(`/token/?access_token=${json.access_token}&refresh_token=${json.refresh_token}`);
+    res.redirect(`/token/?access_token=${json.access_token}&refresh_token=${json.refresh_token}&expires_in=${json.expires_in}`);
+}));
+
+router.get('/valid', catchAsync(async (req, res) => {
+  const authorization = req.headers.authorization;
+  const options = {
+    host: 'discordapp.com',
+    port: 443,
+    path: '/api/users/@me',
+    method: 'GET',
+    headers: {
+      "Authorization" : authorization
+    }
+  };
+  https.request(options, (r) => {
+    if (r.statusCode !== 200) {
+      res.status(401).send({})
+    } else {
+      res.status(200).send({})
+    }
+  }).end();
+}));
+
+router.get('/refresh', catchAsync(async (req, res) => {
+  if (!req.query.refresh_token) throw new Error('NoCodeProvided');
+  const refresh_token = req.query.refresh_token;
+  const creds = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
+  const response = await fetch(`https://discordapp.com/api/oauth2/token?grant_type=refresh_token&refresh_token=${refresh_token}&redirect_uri=${redirect}`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${creds}`,
+      },
+    });
+  const json = await response.json();
+  res.status(200).send({
+    access_token : json.access_token,
+    refresh_token : json.refresh_token,
+    expires_in : json.expires_in
+  })
 }));
 
 module.exports = router;

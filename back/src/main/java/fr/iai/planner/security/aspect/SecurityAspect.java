@@ -9,12 +9,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Aspect
 @Component
+@ConditionalOnProperty(name = "server.ssl.enabled", havingValue = "true")
 public class SecurityAspect {
 
     private final HttpServletRequest request;

@@ -9,6 +9,7 @@ import fr.iai.planner.security.SecurityLevel;
 import fr.iai.planner.security.aspect.Secured;
 import fr.iai.planner.security.exception.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,8 @@ public class UserController {
     private final SecurityUser securityUser;
     private final DiscordUser discordUser;
     private final SecurityRepository securityRepository;
+    @Value("${SECURITY_ENABLED}")
+    private boolean securityEnabled;
 
     @Autowired
     public UserController(UserRepository userRepository, SecurityUser securityUser, DiscordUser discordUser,
@@ -66,11 +69,13 @@ public class UserController {
     @PostMapping("add")
     public void create(@RequestBody User user) {
         // TODO Transaction pour ne pas sauver le user en cas d'erreur
-        if (discordUser == null  || discordUser.getId() == null) {
-            throw new AlreadyExistingUserException("Compte Discord inexistant.");
-        }
-        if (securityUser != null && securityUser.getUser() != null) {
-            throw new AlreadyExistingUserException("Compte déjà créé");
+        if (securityEnabled) {
+            if (discordUser == null  || discordUser.getId() == null) {
+                throw new AlreadyExistingUserException("Compte Discord inexistant.");
+            }
+            if (securityUser != null && securityUser.getUser() != null) {
+                throw new AlreadyExistingUserException("Compte déjà créé");
+            }
         }
         User existing = userRepository.findByName(user.getName());
         if (existing != null) {

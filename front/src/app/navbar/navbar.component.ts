@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
     }
 
     rightOptionsShown() : boolean {
-        return this.user && this.user !== {id : 0, name : ""};
+        return this.user && this.user.id !== 0 && this.user.name && this.user.name != "";
     }
 
 }
