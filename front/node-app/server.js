@@ -27,20 +27,20 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-const securityEnabled = process.env.SECURITY_ENABLED | false;
+const securityEnabled = process.env.SECURITY_ENABLED === 'true' | false;
 if (securityEnabled) {
-  const credentialPath = process.env.CREDENTIAL_PATH | "";
+  const credentialPath = process.env.CREDENTIAL_PATH;
   const credentials = {
     key : fs.readFileSync(path.join(credentialPath, 'privkey.pem')),
     cert : fs.readFileSync(path.join(credentialPath, 'cert.pem')),
     ca : fs.readFileSync(path.join(credentialPath, 'chain.pem'))
   };
   const server = https.createServer(credentials, app);
-  server.listen(4200, () => {
+  server.listen(1443, () => {
     console.log('Server started!');
   });
 } else {
-  app.listen(4200, () => {
+  app.listen(1443, () => {
     console.log('Server started!');
   });
 }
