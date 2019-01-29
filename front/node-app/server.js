@@ -37,10 +37,10 @@ if (securityEnabled) {
   };
   const server = https.createServer(credentials, app);
   server.listen(1443, () => {
-    console.log('Server started!');
+    console.log('Secured server started!');
   });
 } else {
   app.listen(1443, () => {
-    console.log('Server started!');
+    console.log('Unsecured server started!');
   });
 }
