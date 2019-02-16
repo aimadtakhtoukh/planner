@@ -24,7 +24,7 @@ pipeline {
     stage('Building Back') {
       steps {
         dir('back') {
-          sh 'mvn clean install'
+          sh 'mvn clean install -e'
         }
       }
     }
