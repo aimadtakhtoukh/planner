@@ -21,19 +21,7 @@ pipeline {
       }
     }
 
-    stage('Front') {
-      steps {
-        dir('front') {
-          sh 'npm install'
-          sh 'npm run build'
-          dir('node-app') {
-            sh 'npm install'
-          }
-        }
-      }
-    }
-
-    stage('Back') {
+    stage('Building Back') {
       steps {
         dir('back') {
           sh 'mvn clean install'
