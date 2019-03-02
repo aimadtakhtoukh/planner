@@ -9,7 +9,21 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "foresight-main.svg",
+        "foresight-main-black.svg",
+        "foresight-favicon.svg",
+        "android-chrome-192x192.png",
+        "android-chrome-512x512.png",
+        "apple-touch-icon.png",
+        "browserconfig.xml",
+        "favicon-16x16.png",
+        "favicon-32x32.png",
+        "foresight-favicon.svg",
+        "foresight-main.svg",
+        "mstile-150x150.png",
+        "safari-pinned-tab.svg",
+        "site.webmanifest"
       ],
       "index": "index.html",
       "main": "main.ts",
