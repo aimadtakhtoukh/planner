@@ -28,11 +28,16 @@ export class CalendarComponent implements OnInit {
             if (user) {
                 this.currentUserService.loginWith(user);
             }
-          this.entryService
+            const userId = user.id;
+            this.entryService
             .getAllByUsers(DateUtilsService.today(), DateUtilsService.nextWeekSunday())
             .subscribe(
               (userWithEntries : UserWithEntries[]) => {
-                this.usersWithEntries = userWithEntries;
+                this.usersWithEntries = userWithEntries.sort((u1, u2) => {
+                    if (u1.user.id == userId) return -1;
+                    if (u2.user.id == userId) return 1;
+                    return 0
+                });
               }
             )
         });
