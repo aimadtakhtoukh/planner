@@ -13,8 +13,8 @@
   <div class="case-container">
     <column
       class="column"
-      *ngFor="let user of users"
-      [user]="user"
+      *ngFor="let userWithEntries of usersWithEntries"
+      [userWithEntries]="userWithEntries"
       [selectableDays]="selectableDays">
     </column>
   </div>

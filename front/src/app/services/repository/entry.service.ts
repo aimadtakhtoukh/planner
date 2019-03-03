@@ -9,6 +9,7 @@ import 'rxjs/add/observable/throw';
 import * as moment from "moment";
 
 import {Entry} from "../model/entry";
+import {UserWithEntries} from "../model/userWithEntries";
 
 const API_URL = environment.apiUrl + "entry";
 
@@ -19,9 +20,9 @@ export class EntryService {
 
     constructor(private http: HttpClient) {}
 
-    public getAll(start : moment.Moment, end : moment.Moment) : Observable<Entry[]>  {
+    public getAllByUsers(start : moment.Moment, end : moment.Moment) : Observable<UserWithEntries[]>  {
         return this.http
-            .get(API_URL + "/all", { params : {
+            .get(API_URL + "/withUsers", { params : {
                 start : start.format(this.dateFormat),
                 end : end.format(this.dateFormat)
             }})

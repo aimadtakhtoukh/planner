@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Moment} from 'moment';
 import {UserService} from "../services/repository/user.service";
-import {User} from "../services/model/user";
 import {DateUtilsService} from "../services/date-utils.service";
 import {CurrentUserService} from "../services/currentUser.service";
+import {UserWithEntries} from "../services/model/userWithEntries";
+import {EntryService} from "../services/repository/entry.service";
 
 @Component({
     selector: 'calendar',
@@ -13,10 +14,11 @@ import {CurrentUserService} from "../services/currentUser.service";
 export class CalendarComponent implements OnInit {
 
     selectableDays: Array<Moment>;
-    users: User[] = [];
+    usersWithEntries: UserWithEntries[] = [];
 
     constructor (
         private userService : UserService,
+        private entryService : EntryService,
         private currentUserService : CurrentUserService
     ) {}
 
@@ -26,12 +28,13 @@ export class CalendarComponent implements OnInit {
             if (user) {
                 this.currentUserService.loginWith(user);
             }
-            this.userService.getAll()
-                .subscribe(
-                    (users) => {
-                        this.users = users;
-                    }
-                );
+          this.entryService
+            .getAllByUsers(DateUtilsService.today(), DateUtilsService.nextWeekSunday())
+            .subscribe(
+              (userWithEntries : UserWithEntries[]) => {
+                this.usersWithEntries = userWithEntries;
+              }
+            )
         });
     };
 }

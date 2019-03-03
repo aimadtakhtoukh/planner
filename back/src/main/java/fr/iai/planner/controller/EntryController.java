@@ -2,7 +2,9 @@ package fr.iai.planner.controller;
 
 import fr.iai.planner.beans.Entry;
 import fr.iai.planner.beans.SecurityUser;
+import fr.iai.planner.beans.UserWithEntries;
 import fr.iai.planner.dao.EntryRepository;
+import fr.iai.planner.dao.UserRepository;
 import fr.iai.planner.security.SecurityLevel;
 import fr.iai.planner.security.aspect.Secured;
 import fr.iai.planner.security.exception.ForbiddenException;
@@ -17,18 +19,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/entry/")
 public class EntryController {
 
+    private final UserRepository userRepository;
     private final EntryRepository entryRepository;
     private final SecurityUser securityUser;
     @Value("${SECURITY_ENABLED}")
     private boolean securityEnabled;
 
     @Autowired
-    public EntryController(EntryRepository entryRepository, SecurityUser securityUser) {
+    public EntryController(UserRepository userRepository, EntryRepository entryRepository, SecurityUser securityUser) {
+        this.userRepository = userRepository;
         this.entryRepository = entryRepository;
         this.securityUser = securityUser;
     }
@@ -74,13 +79,34 @@ public class EntryController {
         entryRepository.save(
                 new Entry.Builder()
                 .clone(entry)
-                .id(Optional.ofNullable(
-                        entryRepository.findFirstByUserIdAndDate(entry.getUserId(), entry.getDate())
-                    )
+                .id(Optional.ofNullable(entryRepository.findFirstByUserIdAndDate(entry.getUserId(), entry.getDate()))
                         .map(Entry::getId)
                         .orElse(null))
                 .build()
         );
+    }
+
+    @Secured(SecurityLevel.ANY_USER)
+    @GetMapping("withUsers")
+    public List<UserWithEntries> getAllAllowedEntries(
+            @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+        Map<Long, List<Entry>> entriesByUserId = entryRepository.findByDateBetween(start, end)
+                .stream()
+                .collect(
+                    Collectors.groupingBy(
+                        Entry::getUserId,
+                        Collectors.toList()
+                    )
+                );
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserWithEntries.Builder()
+                        .user(user)
+                        .entries(entriesByUserId.get(user.getId()))
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 
     @ExceptionHandler(ForbiddenException.class)

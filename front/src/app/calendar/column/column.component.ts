@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {EntryService} from "../../services/repository/entry.service";
-import {DateUtilsService} from "../../services/date-utils.service";
 import {User} from "../../services/model/user";
 import {Moment} from 'moment';
 import {ColumnModel} from "../../services/model/columnModel";
 import {Entry} from "../../services/model/entry";
 import {CurrentUserService} from "../../services/currentUser.service";
+import {UserWithEntries} from "../../services/model/userWithEntries";
 
 @Component({
     selector: 'column',
@@ -13,9 +13,10 @@ import {CurrentUserService} from "../../services/currentUser.service";
     styleUrls: ['./column.component.scss']
 })
 export class ColumnComponent implements OnInit {
-    @Input() user : User;
+    @Input() userWithEntries : UserWithEntries;
     @Input() selectableDays : Array<Moment>;
 
+    user : User;
     entries: ColumnModel[] = [];
 
     constructor(
@@ -24,19 +25,14 @@ export class ColumnComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.entryService
-            .getForUser(this.user.id, DateUtilsService.today(), DateUtilsService.nextWeekSunday())
-            .subscribe(
-                (entries : Entry[]) => {
-                    this.entries = entries.map(e => new ColumnModel(e, false));
-                }
-            )
+        this.user = this.userWithEntries.user;
+        this.entries = this.userWithEntries.entries.map(e => new ColumnModel(e, false))
     }
 
     getEntryFromDate(date : string) {
         let entry : ColumnModel =  this.entries.filter(c => c.entry.date === date)[0];
         if (entry === undefined) {
-            // Si l'entrée n'est pas définie, on en crée un faux, et on l'ajoute aux entrées existantes, pour
+            // Si l'entrée n'est pas définie, on en crée une fausse, et on l'ajoute aux entrées existantes, pour
             // conserver son état jusqu'à l'envoi de la variable.
             entry = new ColumnModel(
                 new Entry({
