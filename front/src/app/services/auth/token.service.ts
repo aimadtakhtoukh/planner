@@ -48,7 +48,7 @@ export class TokenService implements OnInit {
     this.http.get('/api/discord/refresh', {
       params : {refresh_token : refreshToken}
     }).subscribe((res : RefreshType) => {
-      this.saveAccess(res.access_token, Number(res.expires_in["expires_in"]));
+      this.saveAccess(res.access_token, Number(res["expires_in"]));
       this.saveRefresh(res.refresh_token);
       this.router.navigate(["planner"])
     })
