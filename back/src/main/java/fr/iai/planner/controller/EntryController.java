@@ -15,10 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -103,7 +100,7 @@ public class EntryController {
                 .stream()
                 .map(user -> new UserWithEntries.Builder()
                         .user(user)
-                        .entries(entriesByUserId.get(user.getId()))
+                        .entries(entriesByUserId.getOrDefault(user.getId(), Collections.emptyList()))
                         .build()
                 )
                 .collect(Collectors.toList());

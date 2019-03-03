@@ -68,6 +68,9 @@ public class UserController {
     @Secured(SecurityLevel.ANY_TOKEN)
     @PostMapping("add")
     public void create(@RequestBody User user) {
+        if (user == null || user.getName() == null || user.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nouvel utilisateur invalide car vide");
+        }
         // TODO Transaction pour ne pas sauver le user en cas d'erreur
         if (securityEnabled) {
             if (discordUser == null  || discordUser.getId() == null) {
