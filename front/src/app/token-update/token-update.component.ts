@@ -18,7 +18,7 @@ export class TokenUpdateComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const accessToken = params[this.tokenService.accessTokenKey];
       const refreshToken = params[this.tokenService.refreshTokenKey];
-      this.tokenService.saveAccess(accessToken, Number(params["expires_in"]));
+      this.tokenService.saveAccess(accessToken);
       this.tokenService.saveRefresh(refreshToken);
       this.router.navigate([""]);
     });

@@ -5,7 +5,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from "@angular/router";
 
 import { ModalModule } from 'ngx-bootstrap';
-import { CookieService } from "ngx-cookie-service";
 
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
@@ -57,7 +56,6 @@ const appRoutes : Routes = [
         UserService,
         EntryService,
         CurrentUserService,
-        CookieService,
         TokenService,
         {
             provide: HTTP_INTERCEPTORS,

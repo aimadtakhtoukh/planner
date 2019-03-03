@@ -1,12 +1,11 @@
 import {Injectable, OnInit} from '@angular/core';
-import {CookieService} from "ngx-cookie-service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import {RefreshType} from "../model/refresh";
-import {Router} from "@angular/router";
 
 @Injectable()
 export class TokenService implements OnInit {
@@ -15,25 +14,24 @@ export class TokenService implements OnInit {
   public refreshTokenKey: string = "refresh_token";
 
   constructor(private http: HttpClient,
-              private cookieService: CookieService,
               private router : Router) {}
 
   ngOnInit() {}
 
-  public saveAccess(accessToken: string, expires: number = 604800) {
-    this.cookieService.set(this.accessTokenKey, accessToken, expires, "/");
+  public saveAccess(accessToken: string) {
+    localStorage.setItem(this.accessTokenKey, accessToken)
   }
 
   public saveRefresh(refreshToken: string) {
-    this.cookieService.set(this.refreshTokenKey, refreshToken, 2147483647, "/");
+    localStorage.setItem(this.refreshTokenKey, refreshToken)
   }
 
   public accessToken(): string {
-    return this.cookieService.get(this.accessTokenKey)
+    return localStorage.getItem(this.accessTokenKey)
   }
 
   public refreshToken(): string {
-    return this.cookieService.get(this.refreshTokenKey)
+    return localStorage.getItem(this.refreshTokenKey)
   }
 
   public isTokenValid(): Observable<boolean> {
@@ -48,15 +46,15 @@ export class TokenService implements OnInit {
     this.http.get('/api/discord/refresh', {
       params : {refresh_token : refreshToken}
     }).subscribe((res : RefreshType) => {
-      this.saveAccess(res.access_token, Number(res["expires_in"]));
+      this.saveAccess(res.access_token);
       this.saveRefresh(res.refresh_token);
       this.router.navigate(["planner"])
     })
   }
 
   public clearTokens() {
-    this.cookieService.delete(this.accessTokenKey, "/");
-    this.cookieService.delete(this.refreshTokenKey, "/");
+    localStorage.removeItem(this.accessTokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
   }
 
   private static handleError(error : HttpErrorResponse) {
