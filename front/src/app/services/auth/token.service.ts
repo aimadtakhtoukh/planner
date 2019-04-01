@@ -1,11 +1,9 @@
 import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Observable} from "rxjs/Observable";
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
 import {RefreshType} from "../model/refresh";
+import {throwError, Observable, of} from 'rxjs';
+import {catchError, map} from "rxjs/operators";
 
 @Injectable()
 export class TokenService implements OnInit {
@@ -43,8 +41,8 @@ export class TokenService implements OnInit {
 
   public isTokenValid(): Observable<boolean> {
     return this.http.get<boolean>(('/api/discord/valid'))
-      .map(() => true) //If 200, then it returns true.
-      .catch(() => Observable.of<boolean>(false)) // Catching 401 with a false return.
+      .pipe(map(() => true)) //If 200, then it returns true.
+      .pipe(catchError(() => of<boolean>(false))) // Catching 401 with a false return.
   }
 
   public refresh() {
@@ -75,7 +73,7 @@ export class TokenService implements OnInit {
 
   private static handleError(error : HttpErrorResponse) {
     console.error('Erreur dans TokenService', error.error);
-    return Observable.throw(error);
+    return throwError(error);
   }
 
 }

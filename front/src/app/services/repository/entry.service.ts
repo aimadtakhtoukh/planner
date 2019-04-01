@@ -1,10 +1,9 @@
+import {throwError, Observable} from 'rxjs';
 import {environment} from "../../../environments/environment";
 
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable} from 'rxjs';
 import {catchError} from "rxjs/operators";
-import 'rxjs/add/observable/throw';
 
 import * as moment from "moment";
 
@@ -22,7 +21,7 @@ export class EntryService {
 
     public getAllByUsers(start : moment.Moment, end : moment.Moment) : Observable<UserWithEntries[]>  {
         return this.http
-            .get(API_URL + "/withUsers", { params : {
+            .get<UserWithEntries[]>(API_URL + "/withUsers", { params : {
                 start : start.format(this.dateFormat),
                 end : end.format(this.dateFormat)
             }})
@@ -53,7 +52,7 @@ export class EntryService {
 
     private static handleError(error : HttpErrorResponse) {
         console.error('Erreur dans EntryService', error.error);
-        return Observable.throw(error);
+        return throwError(error);
     }
 
 }

@@ -1,12 +1,12 @@
+import {throwError, Observable} from 'rxjs';
 import {environment} from "../../../environments/environment";
 
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError} from "rxjs/operators";
-import 'rxjs/add/observable/throw';
+
 
 import { User } from '../model/user';
-import {Observable} from "rxjs/Observable";
 
 const API_URL = environment.apiUrl + 'user';
 
@@ -42,7 +42,7 @@ export class UserService {
 
     private static handleError(error : HttpErrorResponse) {
             console.error('Erreur dans UserService', error.error);
-            return Observable.throw(error);
+            return throwError(error);
     }
 
 }
